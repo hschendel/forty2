@@ -339,6 +339,110 @@
 
 				});
 
+		// AJAX contact form
+        var selectFields = '#name,#email,#message';
+        var emailRegex = /^[\w\!\#$%&'\*\+\-=/\?\^_`\{|\}~]+@([A-Za-z\d][A-Za-z\d\-]{0,61}[A-Za-z\d]?\.)*([A-Za-z\d][A-Za-z\d\-]{0,61}[A-Za-z\d])$/;
+        var validators = {
+            'name': function (name) {
+                return name.trim() !== '';
+            },
+            'email': function (email) {
+                return emailRegex.test(email.trim());
+            },
+            'message': function (message) {
+                return message.trim() !== '';
+            }
+        };
+
+        var validateField = function(fieldElem, validateFunc) {
+            if (!validateFunc(fieldElem.val())) {
+                fieldElem.addClass('invalid');
+                fieldElem.parent().addClass('invalid');
+                return false;
+            } else {
+                fieldElem.removeClass('invalid');
+                fieldElem.parent().removeClass('invalid');
+                return true;
+            }
+        };
+
+        var validateForm = function(form) {
+            var res = true;
+            $(selectFields, form).each(function (j, field) {
+                var validatorFunc = validators[$(field).attr('id')];
+                if (validatorFunc === undefined) {
+                    return;
+                }
+                if (!validateField($(field), validatorFunc)) {
+                    res = false;
+                }
+            });
+            if (res) {
+                form.removeClass('invalid');
+            } else {
+                form.addClass('invalid');
+            }
+            return res;
+        };
+
+        var getFormData = function(form) {
+            var data = {};
+            $(selectFields, form).each(function (i, field) {
+                var f = $(field);
+                var id = f.attr('id');
+                if (validators[id] === undefined) {
+                    return;
+                }
+                data[id] = f.val();
+            });
+            return data;
+        };
+
+        var submitForm = function($form) {
+            var data = getFormData($form);
+            var json = JSON.stringify(data);
+            var actionPath = $form.attr('data-action');
+            var req = $.ajax({
+                url: actionPath,
+                type: 'POST',
+                data: json,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'text'
+            });
+            req.done(function () {
+                clearForm($form);
+                $form.addClass('submit-successful');
+            });
+            req.fail(function (jqreq, textStatus, errorThrown) {
+                alert('Error: ' + errorThrown);
+            });
+        };
+
+        var clearForm = function(form) {
+            $(form).removeClass('submit-successful');
+            $(form).removeClass('invalid');
+            $(selectFields, form).val('');
+            $(selectFields, form).each(function (i, field) {
+                $(field).removeClass('invalid');
+                $(field).parent().removeClass('invalid');
+            });
+        };
+
+        $('.form[id="contact_form"]').each(function (i, form) {
+            $('input[type="reset"]', form).click(function () {
+                clearForm(form);
+            });
+            $(selectFields, form).focus(function () {
+                $(this).removeClass('invalid');
+                $(this).parent().removeClass('invalid');
+                $(form).removeClass('submit-successful');
+            });
+            $('input[type="submit"]', form).click(function () {
+                if (validateForm($(form))) {
+                    submitForm($(form));
+                }
+            });
+        });
 	});
 
 })(jQuery);

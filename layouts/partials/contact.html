@@ -1,26 +1,41 @@
 {{ "<!-- Contact -->" | safeHTML}}
-    <section id="contact">
+    <section {{if (and .Site.Params.Contact.image .Params.showContactImage)}}id="contact"{{end}}>
         <div class="inner">
             <section>
-                <form method="post" action="https://formspree.io/{{ .Site.Params.Contact.formEmail }}">
-                    <div class="field half first">
-                        <label for="name">Name</label>
-                        <input type="text" name="name" id="name" />
-                    </div>
-                    <div class="field half">
-                        <label for="email">Email</label>
-                        <input type="text" name="email" id="email" />
-                    </div>
-                    <div class="field">
-                        <label for="message">Message</label>
-                        <textarea name="message" id="message" rows="6"></textarea>
-                    </div>
-                    <ul class="actions">
-                        <li><input type="submit" value="{{ .Site.Params.Contact.buttonSend }}" class="special" /></li>
-                        <li><input type="reset" value="{{ .Site.Params.Contact.buttonClear }}" /></li>
+                <div class="form" id="contact_form" data-action="{{ .Site.Params.Contact.actionPath }}">
+                <h2>{{ .Site.Params.Contact.title }}</h2>
+                <div class="field half first">
+                    <label for="name">{{ .Site.Params.Contact.labelName }}</label>
+                    <label class="invalid-label">{{ .Site.Params.Contact.invalidName }}</label>
+                    <input type="text" name="name" id="name" />
+                </div>
+                <div class="field half">
+                    <label for="email">{{ .Site.Params.Contact.labelEmail }}</label>
+                    <label class="invalid-label">{{ .Site.Params.Contact.invalidEmail }}</label>
+                    <input type="text" name="email" id="email" />
+                </div>
+                <div class="field">
+                    <label for="message">{{ .Site.Params.Contact.labelMessage }}</label>
+                    <label class="invalid-label">{{ .Site.Params.Contact.invalidMessage }}</label>
+                    <textarea name="message" id="message" rows="6"></textarea>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="{{ .Site.Params.Contact.buttonSend }}" class="special" /></li>
+                    <li><input type="reset" value="{{ .Site.Params.Contact.buttonClear }}" /></li>
+                    <li class="success-flash">{{ .Site.Params.Contact.successFlash }}</li>
                     </ul>
-                </form>
+                </div>
             </section>
+            {{ if (and .Site.Params.Contact.image .Params.showContactImage) }}
+            <section class="split">
+                <section>
+                    <div class="contact-method" style="max-width: 20rem">
+                        <img src="{{ .Site.Params.Contact.image }}" width="100%"/>
+                    </div>
+                </section>
+            </section>
+            {{end}}
+            <!--
             <section class="split">
                 <section>
                     <div class="contact-method">
@@ -58,5 +73,6 @@
                     </div>
                 </section>
             </section>
+            -->
         </div>
     </section>
