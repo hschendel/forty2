@@ -1,14 +1,14 @@
 {{ "<!-- Header -->" | safeHTML }}
     <section id="one" class="tiles">
-        {{ range .Site.Params.Tiles.showcase }}
+        {{ range .Pages }}{{ if (eq .Type "service")}}
         <article>
             <span class="image">
-                <img src="{{ .Site.Params.baseURL }}img/{{ .image }}" alt="" />
+                <img src="{{ .Site.Params.baseURL }}img/{{ .Params.image }}" alt="" />
             </span>
             <header class="major">
-                <h3><a href="{{ .url | absURL }}" class="link">{{ .title }}</a></h3>
-                <p>{{ .subtitle }}</p>
+                <h3><a href="{{ .URL | absURL }}" class="link">{{ .Title }}</a></h3>
+                <p>{{ .Description }}</p>
             </header>
         </article>
-        {{ end }}
+        {{ end }}{{ end }}
     </section>

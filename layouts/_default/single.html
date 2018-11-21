@@ -13,21 +13,24 @@
             <div id="main" class="alt">
 
                 <!-- One -->
+                <section id="banner" class="major{{ if .Params.bannerClass }} {{ .Params.bannerClass}}{{end}}">
+                    <div class="inner">
+                        <header class="major">
+                            <h1>{{ .Title }}</h1>
+                        </header>
+                        <div class="content">
+                            <p>{{ .Description }}</p>
+                        </div>
+                    </div>
+                </section>
                     <section id="one">
                         <div class="inner">
-                            <header class="major">
-                                <h1>{{ .Title}}</h1>
-                            </header>
-                            {{ if .Params.image }}
-                                <span class="image main"><img src="{{ .Site.Params.baseURL }}/img/{{ .Section }}/{{ .Params.image }}" alt="" /></span>
-                            {{ end }}
                             {{ .Content }}
                         </div>
                     </section>
-            {{ "<!-- Disqus Inject -->" | safeHTML }}
-                {{ if .Site.DisqusShortname }}
-                  {{ partial "disqus.html" . }}
-                {{ end }}
+            {{ if (and .Site.Params.Contact.enable .Params.enableContact) }}
+				{{ partial "contact.html" . }}
+			{{ end }}
             </div>
             
         {{ "<!-- Footer -->" | safeHTML}}
