@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+
+{{ partial "header.html" . }}
+<body>
+
+{{ "<!-- Wrapper -->" | safeHTML }}
+<div id="wrapper">
+
+{{ partial "nav.html" . }}
+
+{{ "<!-- Main -->" | safeHTML }}
+    <div id="main" class="alt">
+
+        <!-- One -->
+        <section id="banner" class="major{{ if .Params.bannerClass }} {{ .Params.bannerClass}}{{end}}">
+            <div class="inner">
+                <header class="major">
+                    <h1>{{ .Title }}</h1>
+                </header>
+                <div class="content">
+                    <p>{{ .Description }}</p>
+                </div>
+            </div>
+
+        </section>
+        <section id="one" class="cols2to1">
+            <div class="inner">
+                <section>
+            {{ .Content }}
+                </section>
+                <section class="split">
+                    <img src="{{ .Site.Params.Contact.image }}" style="max-width: 15rem" alt="Photo">
+                </section>
+            </div>
+        </section>
+    {{ if .Site.Params.Contact.enable }}
+				{{ partial "contact.html" . }}
+			{{ end }}
+    </div>
+
+{{ "<!-- Footer -->" | safeHTML}}
+{{ if .Site.Params.footer.enable }}
+                {{ partial "footer.html" . }}
+            {{ end }}
+</div>
+
+{{ "<!-- Scripts -->" | safeHTML}}
+{{ partial "js.html" . }}
+
+</body>
+</html>
